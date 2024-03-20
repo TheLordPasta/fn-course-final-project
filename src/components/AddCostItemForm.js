@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-function CostItemsReport() {
+function AddCostItemForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Here, you might handle the submission
@@ -8,7 +8,7 @@ function CostItemsReport() {
 
   return (
     <div className="container mt-5">
-      <h2>Cost Item Report</h2>
+      <h2>Add Cost Item</h2>
       <form>
         <div className="mb-3">
           <label htmlFor="inputSum" className="form-label">
@@ -47,4 +47,4 @@ function CostItemsReport() {
   );
 }
 
-export default CostItemsReport;
+export default AddCostItemForm;

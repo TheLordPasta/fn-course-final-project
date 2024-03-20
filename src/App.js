@@ -1,10 +1,18 @@
 // App.js
 import React, { useEffect } from "react";
 import "./App.css";
-import idb from "./idb/idb"; // Assuming these are named exports
+import "bootstrap/dist/css/bootstrap.min.css";
+import AddCostItemForm from "./components/AddCostItemForm";
+import CostItemsReport from "./components/CostItemsReport";
 
 function App() {
-  return <div></div>;
+  return (
+    <div>
+      <AddCostItemForm />
+      <br></br>
+      <CostItemsReport />
+    </div>
+  );
 }
 
 export default App;

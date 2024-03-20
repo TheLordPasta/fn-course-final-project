@@ -55,7 +55,7 @@ if (!window.indexedDB) {
             });
           };
 
-          // Attaching isValidCostItem to the db object, but it could also be a standalone function since it doesn't use 'this'
+          // Attaching isValidCostItem to the db object
           db.isValidCostItem = function (item) {
             const validCategories = [
               "FOOD",
