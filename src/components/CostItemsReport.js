@@ -1,43 +1,33 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../App.css";
 
 function CostItemsReport() {
+  const [startDate, setStartDate] = useState(new Date());
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here, you might handle the submission
+    // Here, handle the form submission, using startDate
+    console.log(startDate); // Example of using the selected date
   };
 
   return (
     <div className="container mt-5">
       <h2>Cost Item Report</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="inputSum" className="form-label">
-            Sum
+          <label htmlFor="datePicker" className="form-label">
+            Select Month and Year
           </label>
-          <input type="number" min="0" className="form-control" id="inputSum" />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="selectCategory" className="form-label">
-            Category
-          </label>
-          <select
-            id="selectCategory"
-            name="selectCategory"
+          <br></br>
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            dateFormat="MM/yyyy"
+            showMonthYearPicker
             className="form-control"
-          >
-            <option value="FOOD">FOOD</option>
-            <option value="HEALTH">HEALTH</option>
-            <option value="EDUCATION">EDUCATION</option>
-            <option value="TRAVEL">TRAVEL</option>
-            <option value="HOUSING">HOUSING</option>
-            <option value="OTHER">OTHER</option>
-          </select>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="inputDescription" className="form-label">
-            Description
-          </label>
-          <input type="text" className="form-control" id="inputDescription" />
+          />
         </div>
         <button type="submit" className="btn btn-primary">
           Submit
