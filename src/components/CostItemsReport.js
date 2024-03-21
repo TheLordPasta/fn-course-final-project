@@ -8,8 +8,11 @@ function CostItemsReport() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here, handle the form submission, using startDate
-    console.log(startDate); // Example of using the selected date
+    const date = document.getElementById("datePickerForReport").value;
+    const dateSplit = date.split("/");
+    const month = parseInt(dateSplit[0]);
+    const year = parseInt(dateSplit[1]);
+    console.log(month, year);
   };
 
   return (
@@ -22,6 +25,7 @@ function CostItemsReport() {
           </label>
           <br></br>
           <DatePicker
+            id="datePickerForReport"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             dateFormat="MM/yyyy"
