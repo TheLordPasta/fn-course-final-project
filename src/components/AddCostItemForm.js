@@ -1,11 +1,31 @@
 import React from "react";
-import "../App.css"; // Ensure your CSS file is correctly imported
+import "../App.css";
+import "../idb/idb.js";
+import "../idb/idb.js";
 
 function AddCostItemForm() {
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    // Here, you might handle the submission
-  };
+    const userSum = parseFloat(document.getElementById("inputSum").value);
+    const userCategory = document.getElementById("selectCategory").value;
+    const userDescription = document.getElementById("inputDescription").value;
+    document.getElementById("inputSum").value = "";
+    document.getElementById("selectCategory").value = "CHOOSE CATEGORY";
+    document.getElementById("inputDescription").value = "";
+
+    const db = await window.idb.openCostsDB("costsdb", 1);
+    const result1 = await db.addCost({
+      sum: userSum,
+      category: userCategory,
+      description: userDescription,
+    });
+    if (db) {
+      console.log("creating db succeeded");
+    }
+    if (result1) {
+      console.log("adding 1st cost succeeded");
+    }
+  }
 
   return (
     <div className="container mt-5">

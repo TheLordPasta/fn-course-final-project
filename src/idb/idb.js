@@ -40,7 +40,7 @@ if (!window.indexedDB) {
             return new Promise((resolve, reject) => {
               if (!this.isValidCostItem(item)) {
                 console.error("Invalid cost item:", item);
-                reject("Invalid cost item");
+                reject("Invalid cost item", item);
                 return;
               }
               const transaction = this.transaction(["costs"], "readwrite");
