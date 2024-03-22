@@ -38,12 +38,12 @@ if (!window.indexedDB) {
           // Enhance the db object with additional methods
           db.addCost = async function (item) {
             return new Promise((resolve, reject) => {
-              if (!this.isValidCostItem(item)) {
+              if (!db.isValidCostItem(item)) {
                 console.error("Invalid cost item:", item);
                 reject("Invalid cost item", item);
                 return;
               }
-              const transaction = this.transaction(["costs"], "readwrite");
+              const transaction = db.transaction(["costs"], "readwrite");
               const store = transaction.objectStore("costs");
               const request = store.add(item);
 
@@ -51,6 +51,41 @@ if (!window.indexedDB) {
               request.onerror = (event) => {
                 console.error("Error adding cost item", event);
                 reject("Error adding cost item");
+              };
+            });
+          };
+
+          db.CostItemsReport = async function ({ month, year }) {
+            return new Promise((resolve, reject) => {
+              if (!db.isValidDate({ month, year })) {
+                console.error("Invalid date:", { month, year });
+                reject("Invalid date", { month, year });
+                return;
+              }
+
+              const transaction = db.transaction(["costs"], "readonly");
+              const store = transaction.objectStore("costs");
+              const index = store.index("month_and_year");
+              const range = IDBKeyRange.bound([month, year], [month, year]);
+              const cursorRequest = index.openCursor(range);
+              const results = [];
+
+              cursorRequest.onsuccess = (event) => {
+                const cursor = event.target.result;
+                if (cursor) {
+                  results.push(cursor.value);
+                  cursor.continue();
+                } else {
+                  resolve(results);
+                }
+              };
+
+              cursorRequest.onerror = (event) => {
+                console.error(
+                  "Error searching by month and year:",
+                  event.target.error
+                );
+                reject("Error searching by month and year");
               };
             });
           };
@@ -71,6 +106,17 @@ if (!window.indexedDB) {
               item.sum > 0 &&
               typeof item.description === "string" &&
               item.description.trim() !== ""
+            );
+          };
+
+          db.isValidDate = function (item) {
+            return (
+              typeof item.month == "number" &&
+              item.month >= 1 &&
+              item.month <= 12 &&
+              typeof item.year == "number" &&
+              item.year >= 1990 &&
+              item.year <= 2038
             );
           };
 

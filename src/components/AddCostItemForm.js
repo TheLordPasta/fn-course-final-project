@@ -9,22 +9,27 @@ function AddCostItemForm() {
     const userSum = parseFloat(document.getElementById("inputSum").value);
     const userCategory = document.getElementById("selectCategory").value;
     const userDescription = document.getElementById("inputDescription").value;
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1; // Adding 1 because getMonth() returns zero-based month index
+    const currentYear = currentDate.getFullYear();
     document.getElementById("inputSum").value = "";
     document.getElementById("selectCategory").value = "OTHER";
     document.getElementById("inputDescription").value = "";
 
     const db = await window.idb.openCostsDB("costsdb", 1);
     try {
-      const result1 = await db.addCost({
+      const result = await db.addCost({
         sum: userSum,
         category: userCategory,
         description: userDescription,
+        month: currentMonth,
+        year: currentYear,
       });
       if (db) {
-        console.log("creating db succeeded");
+        console.log("opening db succeeded");
       }
-      if (result1) {
-        console.log("adding 1st cost succeeded");
+      if (result) {
+        console.log("adding cost succeeded");
       }
     } catch {
       console.log("Invalid input entered");

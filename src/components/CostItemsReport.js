@@ -1,31 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
 
 function CostItemsReport() {
   const [startDate, setStartDate] = useState(new Date());
+  const [reportData, setReportData] = useState([]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const date = document.getElementById("datePickerForReport").value;
-    const dateSplit = date.split("/");
-    const month = parseInt(dateSplit[0]);
-    const year = parseInt(dateSplit[1]);
-    console.log(month, year);
-  };
+  useEffect(() => {
+    // Fetch and update report data when startDate changes
+    async function fetchReportData() {
+      const date = startDate;
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      const db = await window.idb.openCostsDB("costsdb", 1);
+      try {
+        const result = await db.CostItemsReport({ month: month, year: year });
+        if (result) {
+          console.log("report successfully fetched");
+          setReportData(result);
+        }
+      } catch {
+        console.log("Invalid input entered");
+      }
+    }
+
+    fetchReportData();
+  }, [startDate]);
 
   return (
     <div className="container mt-5">
       <h2>Cost Item Report</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="mb-3">
           <label htmlFor="datePicker" className="form-label">
             Select Month and Year
           </label>
           <br></br>
           <DatePicker
-            id="datePickerForReport"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             dateFormat="MM/yyyy"
@@ -33,10 +45,27 @@ function CostItemsReport() {
             className="form-control"
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
       </form>
+      <div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reportData.map((item, index) => (
+              <tr key={index}>
+                <td>{item.category}</td>
+                <td>{item.description}</td>
+                <td>{item.sum}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
