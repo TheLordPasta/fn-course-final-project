@@ -10,7 +10,7 @@ import {
 import Chart from "react-apexcharts";
 import "../../idb/idb"; // Ensure your IndexedDB setup is correctly imported
 
-const SalesChart = () => {
+const YearlyCostsChart = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // State to keep track of the selected year
   const [chartData, setChartData] = useState({
     series: [],
@@ -104,4 +104,4 @@ const SalesChart = () => {
   );
 };
 
-export default SalesChart;
+export default YearlyCostsChart;

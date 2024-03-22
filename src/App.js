@@ -7,7 +7,7 @@ import CostItemsReport from "./components/CostItemsReport";
 import Blog from "./components/dashboard/Blog";
 import Feeds from "./components/dashboard/Feeds";
 import ProjectTable from "./components/dashboard/ProjectTable";
-import SalesChart from "./components/dashboard/SalesChart";
+import YearlyCostsChart from "./components/dashboard/YearlyCostsChart";
 import TopCards from "./components/dashboard/TopCards";
 import "./idb/idb";
 
@@ -18,7 +18,7 @@ function App() {
       <br></br>
       <CostItemsReport />
       <br></br>
-      <SalesChart />
+      <YearlyCostsChart />
       <br></br>
     </div>
   );
