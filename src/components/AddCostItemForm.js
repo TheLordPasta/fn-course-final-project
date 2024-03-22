@@ -51,6 +51,7 @@ function AddCostItemForm() {
                 min="0"
                 className="form-control"
                 id="inputSum"
+                required
               />
             </div>
             <div className="mb-3">
@@ -61,7 +62,11 @@ function AddCostItemForm() {
                 id="selectCategory"
                 name="selectCategory"
                 className="form-control"
+                required
               >
+                <option invalid value="">
+                  Choose...
+                </option>
                 <option value="FOOD">FOOD</option>
                 <option value="HEALTH">HEALTH</option>
                 <option value="EDUCATION">EDUCATION</option>
@@ -78,6 +83,7 @@ function AddCostItemForm() {
                 type="text"
                 className="form-control"
                 id="inputDescription"
+                required
               />
             </div>
             <button type="submit" className="btn btn-primary">

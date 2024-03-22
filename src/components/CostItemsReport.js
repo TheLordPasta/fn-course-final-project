@@ -43,6 +43,7 @@ function CostItemsReport() {
             dateFormat="MM/yyyy"
             showMonthYearPicker
             className="form-control"
+            required
           />
         </div>
       </form>

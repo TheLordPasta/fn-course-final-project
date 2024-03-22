@@ -90,6 +90,36 @@ if (!window.indexedDB) {
             });
           };
 
+          db.yearlyCostSummaryByCategory = async function (year) {
+            const monthlySummaries = new Array(12).fill(null).map(() => ({
+              FOOD: 0,
+              HEALTH: 0,
+              EDUCATION: 0,
+              TRAVEL: 0,
+              HOUSING: 0,
+              OTHER: 0,
+            })); // Initialize an array for 12 months with categories starting at 0
+
+            for (let month = 1; month <= 12; month++) {
+              try {
+                const monthlyCosts = await this.CostItemsReport({
+                  month,
+                  year,
+                });
+                monthlyCosts.forEach((item) => {
+                  monthlySummaries[month - 1][item.category] += item.sum;
+                });
+              } catch (error) {
+                console.error(
+                  `Error processing costs for month ${month} of year ${year}:`,
+                  error
+                );
+              }
+            }
+
+            return monthlySummaries;
+          };
+
           // Attaching isValidCostItem to the db object
           db.isValidCostItem = function (item) {
             const validCategories = [
