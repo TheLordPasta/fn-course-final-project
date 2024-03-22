@@ -41,6 +41,17 @@ const YearlyCostsChart = () => {
           "Dec",
         ],
       },
+      tooltip: {
+        theme: "dark", // Use the 'dark' theme for the tooltip
+        x: {
+          format: "MM",
+        },
+        y: {
+          formatter: function (val) {
+            return "$" + val;
+          },
+        },
+      },
     },
   });
 
@@ -77,7 +88,7 @@ const YearlyCostsChart = () => {
   };
 
   return (
-    <Card>
+    <Card className="bg-dark text-white">
       <CardBody>
         <CardTitle tag="h5">Cost Summary</CardTitle>
         <CardSubtitle className="text-muted" tag="h6">
@@ -86,10 +97,12 @@ const YearlyCostsChart = () => {
         {/* Year selection input */}
         <div className="mb-3">
           <Input
+            className="input-container"
             type="number"
             value={selectedYear}
             onChange={handleYearChange}
             placeholder="Enter year"
+            style={{ width: "4%" }}
           />
         </div>
         <Chart

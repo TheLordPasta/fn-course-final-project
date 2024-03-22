@@ -48,7 +48,13 @@ function CostItemsReport() {
         </div>
       </form>
       <div>
-        <table className="table">
+        <table
+          className="table table-dark"
+          variant="dark"
+          striped
+          bordered
+          hover
+        >
           <thead>
             <tr>
               <th>Category</th>
