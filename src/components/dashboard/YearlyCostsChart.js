@@ -17,6 +17,7 @@ const YearlyCostsChart = () => {
     options: {
       chart: {
         type: "area",
+        foreColor: "#ffffff",
       },
       dataLabels: {
         enabled: false,
@@ -40,6 +41,18 @@ const YearlyCostsChart = () => {
           "Nov",
           "Dec",
         ],
+        labels: {
+          style: {
+            colors: "#ffffff",
+          },
+        },
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: "#ffffff", // Brighter text for y-axis labels
+          },
+        },
       },
       tooltip: {
         theme: "dark", // Use the 'dark' theme for the tooltip
@@ -50,6 +63,11 @@ const YearlyCostsChart = () => {
           formatter: function (val) {
             return "$" + val;
           },
+        },
+      },
+      title: {
+        style: {
+          color: "#ffffff", // Brighter text for chart title
         },
       },
     },
