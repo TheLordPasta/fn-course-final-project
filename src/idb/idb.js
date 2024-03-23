@@ -1,23 +1,29 @@
-// Ensure IndexedDB compatibility across different browsers
+// Chen Moasis 318912805
+// Ariel Shirkani 207267824
+// Check if the browser supports IndexedDB
 window.indexedDB =
   window.indexedDB ||
   window.mozIndexedDB ||
   window.webkitIndexedDB ||
   window.msIndexedDB;
 
+// If IndexedDB is not supported, log a message
 if (!window.indexedDB) {
   console.log("This browser doesn't support IndexedDB");
 } else {
   window.idb = {
+    // Asynchronously open the IndexedDB database
     async openCostsDB(name, version) {
       return new Promise((resolve, reject) => {
         const request = indexedDB.open(name, version);
 
+        // Handle errors during database opening
         request.onerror = (event) => {
           console.error("An error occurred with IndexedDB", event);
           reject(event);
         };
 
+        // Handle database upgrade (e.g., creating object stores and indexes)
         request.onupgradeneeded = (event) => {
           const db = event.target.result;
           if (!db.objectStoreNames.contains("costs")) {
@@ -25,18 +31,19 @@ if (!window.indexedDB) {
               keyPath: "id",
               autoIncrement: true,
             });
-            // Assuming costs items will now include 'month' and 'year' for indexing
             store.createIndex("month_and_year", ["month", "year"], {
               unique: false,
             });
           }
         };
 
+        // Handle successful database opening
         request.onsuccess = (event) => {
           const db = event.target.result;
 
           // Enhance the db object with additional methods
           db.addCost = async function (item) {
+            // Method to add a cost item to the database
             return new Promise((resolve, reject) => {
               if (!db.isValidCostItem(item)) {
                 console.error("Invalid cost item:", item);
@@ -56,6 +63,7 @@ if (!window.indexedDB) {
           };
 
           db.CostItemsReport = async function ({ month, year }) {
+            // Method to fetch cost items report based on month and year
             return new Promise((resolve, reject) => {
               if (!db.isValidDate({ month, year })) {
                 console.error("Invalid date:", { month, year });
@@ -91,6 +99,7 @@ if (!window.indexedDB) {
           };
 
           db.yearlyCostSummaryByCategory = async function (year) {
+            // Method to calculate yearly cost summary by category
             const monthlySummaries = new Array(12).fill(null).map(() => ({
               FOOD: 0,
               HEALTH: 0,
@@ -120,8 +129,8 @@ if (!window.indexedDB) {
             return monthlySummaries;
           };
 
-          // Attaching isValidCostItem to the db object
           db.isValidCostItem = function (item) {
+            // Method to validate a cost item
             const validCategories = [
               "FOOD",
               "HEALTH",
@@ -140,6 +149,7 @@ if (!window.indexedDB) {
           };
 
           db.isValidDate = function (item) {
+            // Method to validate a date object
             return (
               typeof item.month == "number" &&
               item.month >= 1 &&
@@ -150,7 +160,7 @@ if (!window.indexedDB) {
             );
           };
 
-          resolve(db);
+          resolve(db); // Resolve the promise with the enhanced db object
         };
       });
     },

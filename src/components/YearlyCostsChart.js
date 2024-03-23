@@ -1,3 +1,5 @@
+// Chen Moasis 318912805
+// Ariel Shirkani 207267824
 import React, { useState, useEffect } from "react";
 import {
   Button,
@@ -8,7 +10,7 @@ import {
   Input,
 } from "reactstrap";
 import Chart from "react-apexcharts";
-import "../../idb/idb"; // Ensure your IndexedDB setup is correctly imported
+import "../idb/idb";
 
 const YearlyCostsChart = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear()); // State to keep track of the selected year
@@ -76,7 +78,7 @@ const YearlyCostsChart = () => {
   useEffect(() => {
     const fetchCostSummary = async (year) => {
       try {
-        // Ensure that your IDB setup exposes `openCostsDB` correctly.
+        // Open IndexedDB costs database
         const db = await window.idb.openCostsDB("costsdb", 1);
         if (db) {
           const monthlySummaries = await db.yearlyCostSummaryByCategory(year);
@@ -86,7 +88,7 @@ const YearlyCostsChart = () => {
               data: monthlySummaries.map((month) => month[category]),
             })
           );
-
+          // Update chartData state with fetched data
           setChartData((prevChartData) => ({
             ...prevChartData,
             series: seriesData,
@@ -109,9 +111,6 @@ const YearlyCostsChart = () => {
     <Card className="bg-dark text-white">
       <CardBody>
         <CardTitle tag="h5">Cost Summary</CardTitle>
-        <CardSubtitle className="text-muted" tag="h6">
-          Yearly Cost Report by Category
-        </CardSubtitle>
         {/* Year selection input */}
         <div className="mb-3">
           <Input
@@ -120,7 +119,7 @@ const YearlyCostsChart = () => {
             value={selectedYear}
             onChange={handleYearChange}
             placeholder="Enter year"
-            style={{ width: "4%" }}
+            style={{ width: "auto" }}
           />
         </div>
         <Chart

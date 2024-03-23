@@ -1,3 +1,5 @@
+// Chen Moasis 318912805
+// Ariel Shirkani 207267824
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -13,8 +15,11 @@ function CostItemsReport() {
       const date = startDate;
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
+
+      // Open IndexedDB costs database
       const db = await window.idb.openCostsDB("costsdb", 1);
       try {
+        // Fetch report data based on selected month and year
         const result = await db.CostItemsReport({ month: month, year: year });
         if (result) {
           console.log("report successfully fetched");
@@ -28,6 +33,7 @@ function CostItemsReport() {
     fetchReportData();
   }, [startDate]);
 
+  // Render the component's JSX content
   return (
     <div className="container mt-5">
       <h2>Cost Item Report</h2>
